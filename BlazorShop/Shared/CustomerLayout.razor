@@ -1,0 +1,234 @@
+﻿@using BlazorShop.Core.constant
+@using BlazorShop.Model
+@inherits LayoutComponentBase
+@inject IJSRuntime jsRuntime
+@inject Blazored.SessionStorage.ISessionStorageService session
+
+<Layout Class="layout bg-white">
+    
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__close">+</div>
+        <ul class="offcanvas__widget">
+            <li><span class="icon_search search-switch"></span></li>
+            
+            <li><a href="#"><span class="icon_bag_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+        </ul>
+        <div class="offcanvas__logo">
+            <NavLink href="/"><img src="img/logo.png" alt=""></NavLink>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__auth">
+            <NavLink href="login">Login</NavLink>
+            <a href="#">Register</a>
+        </div>
+    </div>
+    <style>
+        .header{
+            display:flex;
+            justify-content:center;
+            padding: 10px;
+        }
+        .header img{
+            width:200px;
+        }
+        .header-content{
+
+        }
+    </style>
+    <div class="header__logo header">
+                        <NavLink href="/"><img src="img/logo.png" alt=""></NavLink>
+                    </div>
+    <header class="header">
+        <div class="container-fluid">
+            <div class="row header">
+               
+                <div class="col-xl-6 col-lg-7 header">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="header__menu-item "><NavLink href="/">Home</NavLink></li>
+                            <li class="header__menu-item"><NavLink class="nav-link text-decoration-none" href="shop" >Shop</NavLink></li>
+                           
+                           @if(sessionUser == null)
+                        {
+                             <li class="header__menu-item ">
+                             <NavLink href="login">Login</NavLink>
+                             </li>
+                             <li class="header__menu-item ">
+                             <NavLink href="register">Register</NavLink>
+                             </li>
+                           <!-- </div>-->
+                        }
+                        else
+                        {<li class="header__menu-item ">
+                            <div class="header__right__auth">
+                                @sessionUser.Name
+                            </div>
+                            </li>
+                        }
+                         
+
+                            <!-- <li><a href="#">Mine</a>
+                                <ul class="dropdown">
+                                    <li class="header__menu-item"><NavLink href="cart">Shop Cart</NavLink></li>
+                                    <li class="header__menu-item"><NavLink href="checkout">Checkout</NavLink></li>
+                                </ul>
+                            </li>-->
+                            <li class="header__menu-item"><NavLink href="contact">Contact</NavLink></li>
+                            <ul class="header__right__widget">
+                            
+                           
+                            <li><NavLink href="cart"><span class="icon_bag_alt"></span>
+                                
+                            </NavLink></li>
+                        </ul>
+                        </ul>
+                       
+                    </nav>
+                </div>
+                <!--
+                <div class="col-lg-3">
+                    <div class="header__right">
+                        @if(sessionUser == null)
+                        {
+                             <div class="header__right__auth">
+                             <NavLink href="login">Login</NavLink>
+                             <NavLink href="register">Register</NavLink>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="header__right__auth">
+                                @sessionUser.Name
+                            </div>
+                        }
+
+                        <ul class="header__right__widget">
+                            
+                           
+                            <li><NavLink href="cart"><span class="icon_bag_alt"></span>
+                                <div class="tip">2</div>
+                            </NavLink></li>
+                        </ul>
+                    </div>
+                </div>
+                -->
+            </div>
+            <div class="canvas__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    @Body
+        <div class="instagram">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/footer/4.png">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Kadi</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/footer/3.png">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Kadi</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/footer/1.png">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Kadi</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/footer/2.png">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Kadi</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/footer/6.png">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Kadi</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/footer/5.png">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Kadi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <footer class="footer">
+    
+            
+        <div class="row">
+            <div class="col-lg-12">
+                 
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                <div class="footer__copyright__text">
+                    <div class="footer__logo text-left header">
+                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                    </div>
+                    <p>Copyright &copy; All rights reserved | This template is made by Kadi</p>
+                </div>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </div>
+        </div>
+    
+</footer>
+
+</Layout>
+
+<style>
+    .site-layout-content {
+        background: #fff;
+        padding: 24px;
+        min-height: 280px;
+    }
+    #components-layout-demo-top .logo {
+        width: 120px;
+        height: 31px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 16px 24px 16px 0;
+        float: left;
+    }
+</style>
+@code{
+    SessionUser sessionUser;
+    protected override async Task OnInitializedAsync()
+    {
+        
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            sessionUser = await session.GetItemAsync<SessionUser>(SessionKey.CUSTOMER);
+             jsRuntime.InvokeVoidAsync("runJs");
+            await base.OnAfterRenderAsync(firstRender);
+            StateHasChanged();
+        }
+    
+        }
+    }
+}

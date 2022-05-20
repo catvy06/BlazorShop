@@ -1,0 +1,189 @@
+﻿@page "/shop"
+@layout CustomerLayout
+@using BlazorShop.Entities
+@using BlazorShop.Core.constant
+@inject BlazorShop.Service.IProductService ProductService
+@inject BlazorShop.Service.ICategoryService CategoryService
+@inject BlazorShop.Service.ISizeService SizeService
+@inject BlazorShop.Service.IColorService ColorService
+@inject BlazorShop.Service.IImageService ImageService
+
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <NavLink href="/"><i class="fa fa-home"></i> Home</NavLink>
+                    <span>Shop</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Shop Section Begin -->
+<section class="shop spad">
+    <div class="search_bar">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                
+            </div>
+            @if(productPage.Count()>0)
+            {
+                //@ConsoleproductPage.Count();
+                <div class="col-lg-9 col-md-9">
+                <div class="row">
+                    @foreach (Entities.Product item in productPage)
+                    {
+                        <div class="col-lg-4 col-md-6">
+                           <a href="shop/@item.Id">
+                                <div class="product__item">
+                                <div class="product__item__pic set-bg" >
+                                            
+                                                <img src="@item.Images[0].Path" />
+                                            
+                                            @if (item.PriceSale != null || item.PriceSale == 0)
+                                    {
+                                        <div class="label bg-danger">Sale</div>
+                                    }
+                                    else if (item.Amount == 0)
+                                    {
+                                        <div class="label stockout stockblue">Out Of Stock</div>
+                                    }
+                                     
+                                                 <ul class="product__hover">
+                                        <li><a href="@item.Images[0].Path" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                        
+                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                    </ul>
+                                            
+
+                                </div>
+                                
+                                <div class="product__item__text">
+                                    <h6>@item.Name</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    @if (item.PriceSale != null || item.PriceSale > 0)
+                                    {
+                                        <div class="product__price" style="color: #ca1515;">$ @item.PriceSale<span>$ @item.Price</span></div>
+                                    }
+                                    else
+                                    {
+                                        <div class="product__price">$ @item.Price</div>
+                                    }
+                                </div>
+                            </div>
+                           </a>
+                        </div>
+                    }
+
+                   
+                </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-lg-9 col-md-9">
+                <div class="row">
+                    <img src="https://luxeaccessoria.com/shop/assets/img/no-product-found.png"/>
+                </div>
+                </div>
+                
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    List<Entities.Product> products = new List<Entities.Product>();
+    List<Entities.Product> productPageCur = new List<Entities.Product>();
+    List<List<Entities.Product>> productsPage = new List<List<Entities.Product>>();
+    List<Category> categories = new List<Category>();
+    List<Size> sizes = new List<Size>();
+    List<ColorDB> colors = new List<ColorDB>();
+    List<Entities.Product> productPage = new List<Entities.Product>();
+    int minPrice = 0;   
+    int maxPrice = 0;
+    int pageNumber = 1;
+    int curPage = 0;
+    string ValueSearch;
+
+    protected override void OnInitialized()
+    {
+        getData();
+        //Console.WriteLine("ok data");
+        //Console.ReadLine();
+    }
+    private void getData()
+    {
+        Console.WriteLine("data");
+
+        //Console.ReadLine();
+        products = ProductService.GetAllProducts();
+        categories = CategoryService.GetAllCategories();
+        sizes = SizeService.GetAllSize();
+        colors = ColorService.GetAllColor();
+        //var itemMaxPrice = products.MaxBy(x => x.Price);
+        //var itemMinPrice = products.MinBy(x => x.Price);
+        minPrice = 0;
+        maxPrice = 0;
+        setUpPaging("All", null);
+
+    }
+    private void setUpPaging(string cate, string search)
+    {
+        products = ProductService.GetAllProducts();
+        Console.WriteLine(products.Count());
+        Console.WriteLine("shop");
+
+        //Console.ReadLine();
+        if (products.Count() > 0)
+        {
+            productsPage.Clear();
+           // pageNumber = (int)Math.Ceiling(products.Count() / 9.0);
+            
+
+            //for (var i = 0; i < pageNumber; i++)
+            //{
+                //List<Entities.Product> productPage = new List<Entities.Product>();
+                for (var j = 0; j < products.Count(); j++)
+                {
+                    if (products.Count() > 0)
+                    {
+                        Console.WriteLine(j);
+                        productPage.Add(products[j]);
+                       // products.RemoveAt(0);
+                    }
+
+                }
+                        Console.WriteLine(productPage.Count());
+            
+                //productsPage.Add(productPage);
+                //productPageCur = productsPage[0];
+            //}
+        }
+    }
+    private void clickPage(int i)
+    {
+        if (i==-1)
+        {
+            productPageCur = productsPage[ curPage + 1];
+        }
+        else
+        {
+            Console.WriteLine(i);
+            productPageCur = productsPage[i];
+        }
+    }
+   //  data-setbg="@item.Images[0].Path"
+}
+
+

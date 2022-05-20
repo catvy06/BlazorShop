@@ -1,0 +1,82 @@
+﻿@page "/admin/bills/billdetail/{Id}"
+@using BlazorShop.Core.constant
+@using BlazorShop.Entities
+@using BlazorShop.Model
+@inject BlazorShop.Service.IBillDetailService BillDetailService;
+@inject Blazored.SessionStorage.ISessionStorageService session
+@inject NavigationManager NavigationManager
+@layout AdminLayout
+
+
+@if (billDetails == null)
+{
+    <div class="loading"><Icon Type="loading" Height="40px" Width="40px" Theme="outline" /></div>
+}
+else
+{
+    <div class="d-flex justify-content-between">
+        <h4 style="display: inline-block;">Quản lý hóa đơn</h4>
+        <div>
+            <Tooltip Title="@IconType.Outline.Search">
+                <Button Type="@ButtonType.Primary" Icon="@IconType.Outline.Search" />
+            </Tooltip>
+        </div>
+    </div>
+    <Table @ref="table"
+       TItem="BillDetail"
+       DataSource="@billDetails">
+        <Selection Key="@context.Id" />
+        <Column Title="ID Hóa Đơn" @bind-Field="@context.Id" Sortable />
+        <Column Title="ID Nhân Viên" @bind-Field="@context.Id" Sortable />
+        <Column Title="Tổng tiền" @bind-Field="@context.Id" Sortable />
+        <Column Title="Ngày Lập Hóa Đơn" @bind-Field="@context.Id" Sortable />
+
+    </Table>
+   
+}
+
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    int[] a = { PermissionAccount.ADMIN };
+
+    List<BillDetail> billDetails = new List<BillDetail>();
+    BillDetail billDetail = new BillDetail();
+    ITable table;
+    protected override void OnInitialized()
+    {
+        getData();
+    }
+
+    private void getData()
+    {
+        billDetails = BillDetailService.GetBillDetailFromId(Id);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await checkRole(a);
+        }
+    }
+    public async Task checkRole(int[] a)
+    {
+        SessionUser sessionUser;
+        sessionUser = await session.GetItemAsync<SessionUser>(SessionKey.USER);
+        if (sessionUser != null)
+        {
+            if (!a.Contains(sessionUser.Permission))
+            {
+                NavigationManager.NavigateTo("/admin/login");
+            }
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/admin/login"); 
+        }
+
+    }
+}
